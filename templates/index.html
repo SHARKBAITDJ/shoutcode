@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShoutCode – Free Texting</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <div class="wrapper">
+
+    <!-- Header -->
+    <header>
+      <div class="logo">📣 ShoutCode</div>
+      <p class="tagline">Free SMS — no account, no credit card, no BS.</p>
+    </header>
+
+    <!-- Card -->
+    <main>
+      <div class="card">
+
+        <!-- Method Tabs -->
+        <div class="tabs">
+          <button class="tab active" data-method="gateway">
+            📧 Email Gateway <span class="badge">Unlimited</span>
+          </button>
+          <button class="tab" data-method="textbelt">
+            🛰 TextBelt <span class="badge">1/day</span>
+          </button>
+        </div>
+
+        <form id="smsForm">
+
+          <!-- Phone -->
+          <div class="field">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" placeholder="e.g. 5551234567"
+                   maxlength="15" autocomplete="off" required />
+          </div>
+
+          <!-- Carrier (gateway only) -->
+          <div class="field" id="carrierField">
+            <label for="carrier">Carrier</label>
+            <select id="carrier" required>
+              <option value="">— Select your carrier —</option>
+              {% for c in carriers %}
+              <option value="{{ c }}">{{ c | capitalize }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Message -->
+          <div class="field">
+            <label for="message">
+              Message
+              <span id="charCount" class="char-count">0 / 160</span>
+            </label>
+            <textarea id="message" rows="4" maxlength="160"
+                      placeholder="Type your message…" required></textarea>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" id="sendBtn" class="send-btn">
+            <span id="btnText">Send Message</span>
+            <span id="btnSpinner" class="spinner hidden"></span>
+          </button>
+
+        </form>
+
+        <!-- Result Banner -->
+        <div id="result" class="result hidden"></div>
+
+      </div><!-- /.card -->
+
+      <!-- Info Box -->
+      <div class="info-box">
+        <h3>How it works</h3>
+        <ul>
+          <li><strong>Email Gateway (free, unlimited):</strong> Sends an email to your carrier's SMS-email address. Select your carrier and no API key is needed.</li>
+          <li><strong>TextBelt (free tier):</strong> Uses the TextBelt public API — 1 free message per day, carrier detection automatic.</li>
+        </ul>
+        <p class="setup-note">⚙️ Gateway method requires setting <code>SMTP_USER</code> and <code>SMTP_PASS</code> environment variables (Gmail App Password works great).</p>
+      </div>
+
+    </main>
+
+    <footer>Built with ShoutCode · 100% Free</footer>
+
+  </div><!-- /.wrapper -->
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
