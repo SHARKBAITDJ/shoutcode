@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShoutCode — Free SMS Sender</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0d0d0d;
+    color: #f0f0f0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .logo {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .logo h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, #ff4444, #ff7700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .logo p {
+    color: #888;
+    font-size: 0.9rem;
+    margin-top: 4px;
+  }
+
+  .card {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 16px;
+    padding: 28px;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    background: #111;
+    border-radius: 10px;
+    padding: 4px;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 9px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: #888;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .tab.active {
+    background: #2a2a2a;
+    color: #fff;
+  }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 7px;
+    margin-top: 18px;
+  }
+
+  label:first-child { margin-top: 0; }
+
+  input, select, textarea {
+    width: 100%;
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 10px;
+    color: #f0f0f0;
+    font-size: 0.95rem;
+    padding: 12px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: inherit;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: #ff5500;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 90px;
+  }
+
+  select option { background: #1a1a1a; }
+
+  .char-count {
+    text-align: right;
+    font-size: 0.75rem;
+    color: #666;
+    margin-top: 5px;
+  }
+
+  .char-count.warn { color: #ff7700; }
+  .char-count.over  { color: #ff3333; }
+
+  .btn {
+    display: block;
+    width: 100%;
+    margin-top: 22px;
+    padding: 14px;
+    background: linear-gradient(135deg, #ff4444, #ff7700);
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    transition: opacity 0.2s, transform 0.1s;
+  }
+
+  .btn:hover  { opacity: 0.92; }
+  .btn:active { transform: scale(0.98); }
+
+  .btn.secondary {
+    background: #2a2a2a;
+    color: #ccc;
+    margin-top: 10px;
+    font-size: 0.9rem;
+  }
+
+  .banner {
+    margin-top: 16px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    display: none;
+  }
+
+  .banner.success { background: #0f2e12; border: 1px solid #1f5e25; color: #6fcf7f; }
+  .banner.error   { background: #2e0f0f; border: 1px solid #5e1f1f; color: #f87; }
+  .banner.info    { background: #1a1a2e; border: 1px solid #2a2a5e; color: #8af; }
+
+  .info-box {
+    background: #111;
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 14px;
+    margin-top: 18px;
+    font-size: 0.82rem;
+    color: #888;
+    line-height: 1.6;
+  }
+
+  .info-box strong { color: #bbb; }
+
+  .footer {
+    text-align: center;
+    margin-top: 22px;
+    font-size: 0.77rem;
+    color: #555;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="logo">
+    <h1>📣 ShoutCode</h1>
+    <p>Free SMS sender — no accounts, no fees, forever</p>
+  </div>
+
+  <div class="card">
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('email')">📧 Email Gateway</button>
+      <button class="tab" onclick="switchTab('textbelt')">⚡ TextBelt</button>
+    </div>
+
+    <!-- EMAIL GATEWAY PANEL -->
+    <div id="panel-email" class="panel active">
+      <label>Phone Number</label>
+      <input type="tel" id="eg-phone" placeholder="10-digit US number e.g. 5551234567" maxlength="10"
+             oninput="this.value=this.value.replace(/\D/g,'')">
+
+      <label>Carrier</label>
+      <select id="eg-carrier">
+        <option value="">— Select carrier —</option>
+        <option value="txt.att.net">AT&T</option>
+        <option value="vtext.com">Verizon</option>
+        <option value="tmomail.net">T-Mobile</option>
+        <option value="messaging.sprintpcs.com">Sprint</option>
+        <option value="myboostmobile.com">Boost Mobile</option>
+        <option value="sms.mycricket.com">Cricket</option>
+        <option value="mymetropcs.com">MetroPCS / Metro by T-Mobile</option>
+        <option value="text.republicwireless.com">Republic Wireless</option>
+        <option value="email.uscc.net">US Cellular</option>
+        <option value="vzwpix.com">Verizon MMS</option>
+      </select>
+
+      <label>Message</label>
+      <textarea id="eg-msg" placeholder="Type your message here…" maxlength="160"
+                oninput="updateCount('eg-msg','eg-count',160)"></textarea>
+      <div class="char-count" id="eg-count">0 / 160</div>
+
+      <button class="btn" onclick="sendEmail()">📨 Open in Email App &amp; Send</button>
+
+      <div id="eg-banner" class="banner"></div>
+
+      <div class="info-box">
+        <strong>How it works:</strong> Clicking the button opens your default email app with the carrier's SMS gateway address pre-filled. Hit Send there — the message arrives as a text. Works with Gmail, Outlook, Apple Mail, and any email app. <strong>Completely free, unlimited sends.</strong>
+      </div>
+    </div>
+
+    <!-- TEXTBELT PANEL -->
+    <div id="panel-textbelt" class="panel">
+      <label>Phone Number</label>
+      <input type="tel" id="tb-phone" placeholder="10-digit US number e.g. 5551234567" maxlength="10"
+             oninput="this.value=this.value.replace(/\D/g,'')">
+
+      <label>Message</label>
+      <textarea id="tb-msg" placeholder="Type your message here…" maxlength="160"
+                oninput="updateCount('tb-msg','tb-count',160)"></textarea>
+      <div class="char-count" id="tb-count">0 / 160</div>
+
+      <button class="btn" onclick="sendTextbelt()" id="tb-btn">⚡ Send via TextBelt (Free)</button>
+
+      <div id="tb-banner" class="banner"></div>
+
+      <div class="info-box">
+        <strong>TextBelt free tier:</strong> Sends 1 SMS per day at no cost using the public TextBelt API — no account needed. For more, use the Email Gateway tab which is unlimited. TextBelt works best for quick one-off sends.
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">ShoutCode · No accounts · No ads · No fees · Free forever</div>
+</div>
+
+<script>
+  function switchTab(tab) {
+    document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['email','textbelt'][i] === tab));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + tab).classList.add('active');
+  }
+
+  function updateCount(msgId, countId, max) {
+    const len = document.getElementById(msgId).value.length;
+    const el = document.getElementById(countId);
+    el.textContent = len + ' / ' + max;
+    el.className = 'char-count' + (len > max * 0.9 ? (len >= max ? ' over' : ' warn') : '');
+  }
+
+  function showBanner(id, type, msg) {
+    const el = document.getElementById(id);
+    el.className = 'banner ' + type;
+    el.innerHTML = msg;
+    el.style.display = 'block';
+  }
+
+  function sendEmail() {
+    const phone   = document.getElementById('eg-phone').value.trim();
+    const carrier = document.getElementById('eg-carrier').value;
+    const msg     = document.getElementById('eg-msg').value.trim();
+
+    if (!phone || phone.length !== 10) {
+      showBanner('eg-banner', 'error', '⚠️ Enter a valid 10-digit US phone number.');
+      return;
+    }
+    if (!carrier) {
+      showBanner('eg-banner', 'error', '⚠️ Please select the recipient\'s carrier.');
+      return;
+    }
+    if (!msg) {
+      showBanner('eg-banner', 'error', '⚠️ Message cannot be empty.');
+      return;
+    }
+
+    const to = phone + '@' + carrier;
+    const mailtoLink = 'mailto:' + to + '?subject=&body=' + encodeURIComponent(msg);
+    window.location.href = mailtoLink;
+
+    showBanner('eg-banner', 'success',
+      '✅ Your email app should open now.<br>Just hit <strong>Send</strong> there — it arrives as a text to ' +
+      '<strong>' + phone + '</strong>.');
+  }
+
+  function sendTextbelt() {
+    const phone = document.getElementById('tb-phone').value.trim();
+    const msg   = document.getElementById('tb-msg').value.trim();
+    const btn   = document.getElementById('tb-btn');
+
+    if (!phone || phone.length !== 10) {
+      showBanner('tb-banner', 'error', '⚠️ Enter a valid 10-digit US phone number.');
+      return;
+    }
+    if (!msg) {
+      showBanner('tb-banner', 'error', '⚠️ Message cannot be empty.');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    showBanner('tb-banner', 'info', '⏳ Sending…');
+
+    fetch('https://textbelt.com/text', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ phone: '1' + phone, message: msg, key: 'textbelt' })
+    })
+    .then(r => r.json())
+    .then(data => {
+      btn.disabled = false;
+      btn.textContent = '⚡ Send via TextBelt (Free)';
+      if (data.success) {
+        showBanner('tb-banner', 'success',
+          '✅ Message sent to <strong>' + phone + '</strong>!<br><small>TextBelt quota: ' +
+          (data.quotaRemaining !== undefined ? data.quotaRemaining + ' sends remaining today' : 'check textbelt.com') + '</small>');
+      } else {
+        showBanner('tb-banner', 'error',
+          '❌ ' + (data.error || 'Send failed.') + '<br><small>TextBelt allows 1 free send per day. Try the Email Gateway tab for unlimited sends.</small>');
+      }
+    })
+    .catch(() => {
+      btn.disabled = false;
+      btn.textContent = '⚡ Send via TextBelt (Free)';
+      showBanner('tb-banner', 'error',
+        '❌ Network error. Check your connection, or use the Email Gateway tab instead.');
+    });
+  }
+</script>
+</body>
+</html>
