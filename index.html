@@ -12,23 +12,15 @@
     color: #f0f0f0;
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     padding: 20px;
   }
 
-  .container {
-    width: 100%;
-    max-width: 500px;
-  }
-
-  .logo {
+  .page-header {
     text-align: center;
-    margin-bottom: 36px;
+    padding: 28px 0 24px;
   }
 
-  .logo h1 {
+  .page-header h1 {
     font-size: 2.4rem;
     font-weight: 800;
     letter-spacing: -1px;
@@ -38,23 +30,63 @@
     background-clip: text;
   }
 
-  .logo p {
-    color: #888;
-    font-size: 0.9rem;
-    margin-top: 4px;
+  .page-header p { color: #888; font-size: 0.9rem; margin-top: 4px; }
+
+  /* ── NAV ── */
+  .nav {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
   }
 
+  .nav-btn {
+    padding: 10px 20px;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 30px;
+    color: #888;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav-btn.active, .nav-btn:hover {
+    background: linear-gradient(135deg, #ff4444, #ff7700);
+    border-color: transparent;
+    color: #fff;
+  }
+
+  /* ── PAGE SECTIONS ── */
+  .section { display: none; max-width: 560px; margin: 0 auto; }
+  .section.active { display: block; }
+
+  /* ── CARD ── */
   .card {
     background: #1a1a1a;
     border: 1px solid #2a2a2a;
     border-radius: 16px;
     padding: 28px;
+    margin-bottom: 16px;
   }
 
+  .card-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #ff6633;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 18px;
+  }
+
+  /* ── SEND TABS ── */
   .tabs {
     display: flex;
-    gap: 8px;
-    margin-bottom: 24px;
+    gap: 6px;
+    margin-bottom: 22px;
     background: #111;
     border-radius: 10px;
     padding: 4px;
@@ -73,23 +105,20 @@
     transition: all 0.2s;
   }
 
-  .tab.active {
-    background: #2a2a2a;
-    color: #fff;
-  }
+  .tab.active { background: #2a2a2a; color: #fff; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
 
-  .panel { display: none; }
-  .panel.active { display: block; }
-
+  /* ── FORM ELEMENTS ── */
   label {
     display: block;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: 600;
     color: #aaa;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-bottom: 7px;
-    margin-top: 18px;
+    margin-bottom: 6px;
+    margin-top: 16px;
   }
 
   label:first-child { margin-top: 0; }
@@ -101,38 +130,76 @@
     border-radius: 10px;
     color: #f0f0f0;
     font-size: 0.95rem;
-    padding: 12px 14px;
+    padding: 11px 14px;
     outline: none;
     transition: border-color 0.2s;
     font-family: inherit;
   }
 
-  input:focus, select:focus, textarea:focus {
-    border-color: #ff5500;
-  }
-
-  textarea {
-    resize: vertical;
-    min-height: 90px;
-  }
-
+  input:focus, select:focus, textarea:focus { border-color: #ff5500; }
+  textarea { resize: vertical; min-height: 80px; }
   select option { background: #1a1a1a; }
 
-  .char-count {
-    text-align: right;
-    font-size: 0.75rem;
-    color: #666;
-    margin-top: 5px;
+  .char-count { text-align: right; font-size: 0.74rem; color: #666; margin-top: 4px; }
+  .char-count.warn { color: #ff7700; }
+  .char-count.over { color: #ff3333; }
+
+  /* ── KEYWORD SUGGESTION DROPDOWN ── */
+  .kw-wrap { position: relative; }
+
+  .kw-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: #1e1e1e;
+    border: 1px solid #444;
+    border-radius: 10px;
+    margin-top: 4px;
+    overflow: hidden;
+    display: none;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
   }
 
-  .char-count.warn { color: #ff7700; }
-  .char-count.over  { color: #ff3333; }
+  .kw-dropdown.open { display: block; }
 
+  .kw-item {
+    padding: 10px 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #2a2a2a;
+    transition: background 0.15s;
+  }
+
+  .kw-item:last-child { border-bottom: none; }
+  .kw-item:hover { background: #2a2a2a; }
+  .kw-item .kw-badge {
+    background: linear-gradient(135deg, #ff4444, #ff7700);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .kw-item .kw-preview {
+    color: #888;
+    font-size: 0.82rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* ── BUTTONS ── */
   .btn {
     display: block;
     width: 100%;
-    margin-top: 22px;
-    padding: 14px;
+    margin-top: 20px;
+    padding: 13px;
     background: linear-gradient(135deg, #ff4444, #ff7700);
     border: none;
     border-radius: 10px;
@@ -140,41 +207,175 @@
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
-    letter-spacing: 0.3px;
     transition: opacity 0.2s, transform 0.1s;
   }
 
-  .btn:hover  { opacity: 0.92; }
+  .btn:hover  { opacity: 0.9; }
   .btn:active { transform: scale(0.98); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-  .btn.secondary {
+  .btn-secondary {
     background: #2a2a2a;
     color: #ccc;
+    font-size: 0.88rem;
     margin-top: 10px;
-    font-size: 0.9rem;
+    padding: 11px;
   }
 
-  .banner {
-    margin-top: 16px;
-    padding: 12px 16px;
-    border-radius: 10px;
+  .btn-sm {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-danger { background: #3a1515; color: #f87; }
+  .btn-danger:hover { background: #5a1a1a; }
+  .btn-edit { background: #1a2a3a; color: #7af; }
+  .btn-edit:hover { background: #1f3550; }
+  .btn-add {
+    background: linear-gradient(135deg, #ff4444, #ff7700);
+    color: #fff;
+    padding: 10px 18px;
     font-size: 0.88rem;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    transition: opacity 0.2s;
+  }
+  .btn-add:hover { opacity: 0.88; }
+
+  /* ── BANNER ── */
+  .banner {
+    margin-top: 14px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    font-size: 0.86rem;
     line-height: 1.5;
     display: none;
   }
 
-  .banner.success { background: #0f2e12; border: 1px solid #1f5e25; color: #6fcf7f; }
-  .banner.error   { background: #2e0f0f; border: 1px solid #5e1f1f; color: #f87; }
-  .banner.info    { background: #1a1a2e; border: 1px solid #2a2a5e; color: #8af; }
+  .banner.success { background: #0f2e12; border: 1px solid #1f5e25; color: #6fcf7f; display: block; }
+  .banner.error   { background: #2e0f0f; border: 1px solid #5e1f1f; color: #f87; display: block; }
+  .banner.info    { background: #1a1a2e; border: 1px solid #2a2a5e; color: #8af; display: block; }
 
+  /* ── KEYWORD LIST ── */
+  .kw-list { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+
+  .kw-row {
+    background: #111;
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .kw-row-body { flex: 1; min-width: 0; }
+  .kw-row-keyword {
+    font-weight: 700;
+    color: #ff7733;
+    font-size: 0.92rem;
+    word-break: break-word;
+  }
+  .kw-row-reply {
+    color: #999;
+    font-size: 0.82rem;
+    margin-top: 3px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.4;
+  }
+
+  .kw-row-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+  .empty-state {
+    text-align: center;
+    padding: 32px 16px;
+    color: #555;
+    font-size: 0.88rem;
+    line-height: 1.7;
+  }
+
+  .empty-state .icon { font-size: 2rem; display: block; margin-bottom: 8px; }
+
+  /* ── STATS ── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .stat-card {
+    background: #111;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    padding: 16px 12px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ff4444, #ff7700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .stat-label { font-size: 0.72rem; color: #666; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.4px; }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 16px;
+    padding: 28px;
+    width: 100%;
+    max-width: 480px;
+  }
+
+  .modal-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #fff;
+  }
+
+  .modal-actions { display: flex; gap: 10px; margin-top: 22px; }
+  .modal-actions .btn { margin-top: 0; flex: 1; }
+
+  /* ── INFO BOX ── */
   .info-box {
     background: #111;
     border: 1px solid #2a2a2a;
     border-radius: 10px;
-    padding: 14px;
-    margin-top: 18px;
+    padding: 13px;
+    margin-top: 16px;
     font-size: 0.82rem;
-    color: #888;
+    color: #777;
     line-height: 1.6;
   }
 
@@ -182,36 +383,81 @@
 
   .footer {
     text-align: center;
-    margin-top: 22px;
-    font-size: 0.77rem;
-    color: #555;
+    margin-top: 28px;
+    padding-bottom: 16px;
+    font-size: 0.75rem;
+    color: #444;
   }
+
+  /* ── SEARCH ── */
+  .search-wrap { position: relative; margin-bottom: 16px; }
+  .search-wrap input { padding-left: 36px; }
+  .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #555;
+    font-size: 0.9rem;
+    pointer-events: none;
+  }
+
+  /* ── QUICK REPLY BUTTON GRID ── */
+  .qr-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .qr-pill {
+    padding: 6px 14px;
+    background: #1a1a2e;
+    border: 1px solid #2a2a5e;
+    border-radius: 20px;
+    color: #8af;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .qr-pill:hover { background: #2a2a5e; }
 </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="logo">
-    <h1>📣 ShoutCode</h1>
-    <p>Free SMS sender — no accounts, no fees, forever</p>
-  </div>
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <h1>📣 ShoutCode</h1>
+  <p>Free SMS sender with unlimited keywords & auto-replies — forever</p>
+</div>
 
+<!-- NAV -->
+<nav class="nav">
+  <button class="nav-btn active" onclick="showSection('send')">📨 Send SMS</button>
+  <button class="nav-btn" onclick="showSection('keywords')">⚡ Keywords</button>
+  <button class="nav-btn" onclick="showSection('stats')">📊 Stats</button>
+</nav>
+
+<!-- ══════════════════════ SEND SECTION ══════════════════════ -->
+<div id="section-send" class="section active">
   <div class="card">
     <div class="tabs">
       <button class="tab active" onclick="switchTab('email')">📧 Email Gateway</button>
       <button class="tab" onclick="switchTab('textbelt')">⚡ TextBelt</button>
     </div>
 
-    <!-- EMAIL GATEWAY PANEL -->
-    <div id="panel-email" class="panel active">
+    <!-- EMAIL GATEWAY -->
+    <div id="panel-email" class="tab-panel active">
       <label>Phone Number</label>
-      <input type="tel" id="eg-phone" placeholder="10-digit US number e.g. 5551234567" maxlength="10"
+      <input type="tel" id="eg-phone" placeholder="10-digit US number  e.g. 5551234567" maxlength="10"
              oninput="this.value=this.value.replace(/\D/g,'')">
 
       <label>Carrier</label>
       <select id="eg-carrier">
         <option value="">— Select carrier —</option>
-        <option value="txt.att.net">AT&T</option>
+        <option value="txt.att.net">AT&amp;T</option>
         <option value="vtext.com">Verizon</option>
         <option value="tmomail.net">T-Mobile</option>
         <option value="messaging.sprintpcs.com">Sprint</option>
@@ -223,135 +469,490 @@
         <option value="vzwpix.com">Verizon MMS</option>
       </select>
 
-      <label>Message</label>
-      <textarea id="eg-msg" placeholder="Type your message here…" maxlength="160"
-                oninput="updateCount('eg-msg','eg-count',160)"></textarea>
+      <label>Message / Keyword</label>
+      <div class="kw-wrap">
+        <input type="text" id="eg-keyword-trigger" placeholder="Type a keyword or your message…"
+               autocomplete="off"
+               oninput="onKeywordInput('eg')"
+               onblur="setTimeout(()=>closeKwDropdown('eg'),200)">
+        <div id="eg-kw-dropdown" class="kw-dropdown"></div>
+      </div>
+
+      <label>Full Message</label>
+      <textarea id="eg-msg" placeholder="Your message will appear here — or type it directly…"
+                maxlength="160" oninput="updateCount('eg-msg','eg-count',160)"></textarea>
       <div class="char-count" id="eg-count">0 / 160</div>
 
-      <button class="btn" onclick="sendEmail()">📨 Open in Email App &amp; Send</button>
+      <!-- Quick Reply Pills -->
+      <div id="eg-qr-section" style="display:none">
+        <label>Quick Replies</label>
+        <div class="qr-grid" id="eg-qr-grid"></div>
+      </div>
 
+      <button class="btn" onclick="sendEmail()">📨 Open in Email App &amp; Send</button>
       <div id="eg-banner" class="banner"></div>
 
       <div class="info-box">
-        <strong>How it works:</strong> Clicking the button opens your default email app with the carrier's SMS gateway address pre-filled. Hit Send there — the message arrives as a text. Works with Gmail, Outlook, Apple Mail, and any email app. <strong>Completely free, unlimited sends.</strong>
+        <strong>How it works:</strong> Clicking the button opens your email app with the carrier's SMS gateway pre-filled. Hit Send there — it arrives as a text. <strong>Unlimited, free forever.</strong>
       </div>
     </div>
 
-    <!-- TEXTBELT PANEL -->
-    <div id="panel-textbelt" class="panel">
+    <!-- TEXTBELT -->
+    <div id="panel-textbelt" class="tab-panel">
       <label>Phone Number</label>
-      <input type="tel" id="tb-phone" placeholder="10-digit US number e.g. 5551234567" maxlength="10"
+      <input type="tel" id="tb-phone" placeholder="10-digit US number  e.g. 5551234567" maxlength="10"
              oninput="this.value=this.value.replace(/\D/g,'')">
 
-      <label>Message</label>
-      <textarea id="tb-msg" placeholder="Type your message here…" maxlength="160"
-                oninput="updateCount('tb-msg','tb-count',160)"></textarea>
+      <label>Message / Keyword</label>
+      <div class="kw-wrap">
+        <input type="text" id="tb-keyword-trigger" placeholder="Type a keyword or your message…"
+               autocomplete="off"
+               oninput="onKeywordInput('tb')"
+               onblur="setTimeout(()=>closeKwDropdown('tb'),200)">
+        <div id="tb-kw-dropdown" class="kw-dropdown"></div>
+      </div>
+
+      <label>Full Message</label>
+      <textarea id="tb-msg" placeholder="Your message will appear here — or type it directly…"
+                maxlength="160" oninput="updateCount('tb-msg','tb-count',160)"></textarea>
       <div class="char-count" id="tb-count">0 / 160</div>
 
-      <button class="btn" onclick="sendTextbelt()" id="tb-btn">⚡ Send via TextBelt (Free)</button>
+      <!-- Quick Reply Pills -->
+      <div id="tb-qr-section" style="display:none">
+        <label>Quick Replies</label>
+        <div class="qr-grid" id="tb-qr-grid"></div>
+      </div>
 
+      <button class="btn" onclick="sendTextbelt()" id="tb-btn">⚡ Send via TextBelt (Free)</button>
       <div id="tb-banner" class="banner"></div>
 
       <div class="info-box">
-        <strong>TextBelt free tier:</strong> Sends 1 SMS per day at no cost using the public TextBelt API — no account needed. For more, use the Email Gateway tab which is unlimited. TextBelt works best for quick one-off sends.
+        <strong>TextBelt free tier:</strong> 1 SMS per day with no account. For unlimited sends, use the Email Gateway tab.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ KEYWORDS SECTION ══════════════════════ -->
+<div id="section-keywords" class="section">
+  <div class="card">
+    <div class="card-title">⚡ Keyword Auto-Replies</div>
+
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+      <span style="color:#888; font-size:0.85rem;" id="kw-count-label">0 keywords saved</span>
+      <button class="btn-add" onclick="openAddModal()">+ Add Keyword</button>
+    </div>
+
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="kw-search" placeholder="Search keywords…" oninput="renderKeywordList()">
+    </div>
+
+    <div id="kw-list" class="kw-list">
+      <div class="empty-state">
+        <span class="icon">⚡</span>
+        No keywords yet.<br>
+        Add one to start building your auto-reply library.
       </div>
     </div>
   </div>
 
-  <div class="footer">ShoutCode · No accounts · No ads · No fees · Free forever</div>
+  <div class="info-box" style="max-width:560px; margin:0 auto 16px;">
+    <strong>How keywords work:</strong> Save a keyword (e.g. <em>INFO</em>, <em>PROMO</em>, <em>STOP</em>) and a reply message. On the Send page, type the keyword and it instantly fills in your pre-written message — no retyping needed. <strong>Unlimited keywords, stored in your browser, free forever.</strong>
+  </div>
 </div>
 
+<!-- ══════════════════════ STATS SECTION ══════════════════════ -->
+<div id="section-stats" class="section">
+  <div class="card">
+    <div class="card-title">📊 Usage Overview</div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num" id="stat-sent">0</div>
+        <div class="stat-label">Messages Sent</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-keywords">0</div>
+        <div class="stat-label">Keywords</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-kw-used">0</div>
+        <div class="stat-label">Keyword Hits</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 Recent Activity</div>
+    <div id="activity-list">
+      <div class="empty-state">
+        <span class="icon">📋</span>
+        No messages sent yet.
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🗑️ Data Management</div>
+    <p style="color:#888; font-size:0.86rem; line-height:1.6; margin-bottom:14px;">
+      All ShoutCode data is stored locally in your browser. Nothing is sent to any server — your keywords and history stay private.
+    </p>
+    <button class="btn btn-secondary" onclick="exportData()">⬇️ Export All Data (JSON)</button>
+    <button class="btn" style="background:#2a0a0a; margin-top:10px; font-size:0.88rem;" onclick="confirmClear()">🗑️ Clear All Data</button>
+  </div>
+</div>
+
+<!-- ══════════════════════ ADD / EDIT MODAL ══════════════════════ -->
+<div class="modal-overlay" id="kw-modal">
+  <div class="modal">
+    <div class="modal-title" id="modal-title">Add Keyword</div>
+
+    <label>Keyword</label>
+    <input type="text" id="modal-keyword" placeholder="e.g. INFO, STOP, PROMO, JOIN"
+           oninput="this.value=this.value.toUpperCase().replace(/\s+/g,'_')">
+
+    <label>Auto-Reply Message</label>
+    <textarea id="modal-reply" placeholder="The message that gets auto-filled when this keyword is typed…"
+              maxlength="160" oninput="updateCount('modal-reply','modal-count',160)"></textarea>
+    <div class="char-count" id="modal-count">0 / 160</div>
+
+    <div id="modal-banner" class="banner" style="margin-top:10px;"></div>
+
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()" style="margin-top:0;">Cancel</button>
+      <button class="btn" id="modal-save-btn" onclick="saveKeyword()" style="margin-top:0;">Save Keyword</button>
+    </div>
+  </div>
+</div>
+
+<div class="footer">ShoutCode · No accounts · No servers · No fees · Free forever</div>
+
 <script>
-  function switchTab(tab) {
-    document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['email','textbelt'][i] === tab));
-    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-    document.getElementById('panel-' + tab).classList.add('active');
+// ════════════════════ DATA LAYER ════════════════════
+const DB = {
+  get keywords() { try { return JSON.parse(localStorage.getItem('sc_keywords')||'[]'); } catch{ return []; } },
+  set keywords(v) { localStorage.setItem('sc_keywords', JSON.stringify(v)); },
+
+  get stats() { try { return JSON.parse(localStorage.getItem('sc_stats')||'{"sent":0,"kwHits":0}'); } catch{ return {sent:0,kwHits:0}; } },
+  set stats(v) { localStorage.setItem('sc_stats', JSON.stringify(v)); },
+
+  get log() { try { return JSON.parse(localStorage.getItem('sc_log')||'[]'); } catch{ return []; } },
+  set log(v) { localStorage.setItem('sc_log', JSON.stringify(v.slice(-50))); },  // keep last 50
+
+  bumpSent(phone, message, method, usedKw) {
+    const s = this.stats;
+    s.sent++;
+    if (usedKw) s.kwHits = (s.kwHits||0) + 1;
+    this.stats = s;
+    const log = this.log;
+    log.unshift({ ts: Date.now(), phone, msg: message.slice(0,60), method, kw: usedKw||null });
+    this.log = log;
+  }
+};
+
+// ════════════════════ NAV ════════════════════
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if (id === 'keywords') renderKeywordList();
+  if (id === 'stats') renderStats();
+  if (id === 'send') renderQuickReplies();
+}
+
+// ════════════════════ SEND TABS ════════════════════
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t,i)=> t.classList.toggle('active', ['email','textbelt'][i]===tab));
+  document.querySelectorAll('.tab-panel').forEach(p=> p.classList.remove('active'));
+  document.getElementById('panel-' + tab).classList.add('active');
+}
+
+function updateCount(msgId, countId, max) {
+  const len = document.getElementById(msgId).value.length;
+  const el = document.getElementById(countId);
+  el.textContent = len + ' / ' + max;
+  el.className = 'char-count' + (len >= max ? ' over' : len > max*.9 ? ' warn' : '');
+}
+
+// ════════════════════ KEYWORD AUTOCOMPLETE ════════════════════
+let activeKwId = null; // which prefix is being edited
+
+function onKeywordInput(prefix) {
+  const val = document.getElementById(prefix + '-keyword-trigger').value.trim().toUpperCase();
+  const dropdown = document.getElementById(prefix + '-kw-dropdown');
+
+  if (!val) { dropdown.classList.remove('open'); dropdown.innerHTML = ''; return; }
+
+  const matches = DB.keywords.filter(k =>
+    k.keyword.startsWith(val) || k.keyword.includes(val)
+  );
+
+  if (!matches.length) { dropdown.classList.remove('open'); dropdown.innerHTML = ''; return; }
+
+  dropdown.innerHTML = matches.slice(0,8).map(k => `
+    <div class="kw-item" onmousedown="applyKeyword('${prefix}','${escAttr(k.keyword)}')">
+      <span class="kw-badge">${escHtml(k.keyword)}</span>
+      <span class="kw-preview">${escHtml(k.reply)}</span>
+    </div>
+  `).join('');
+  dropdown.classList.add('open');
+}
+
+function applyKeyword(prefix, keyword) {
+  const kw = DB.keywords.find(k => k.keyword === keyword);
+  if (!kw) return;
+  document.getElementById(prefix + '-keyword-trigger').value = kw.keyword;
+  document.getElementById(prefix + '-msg').value = kw.reply;
+  updateCount(prefix + '-msg', prefix + '-count', 160);
+  closeKwDropdown(prefix);
+  // bump hit count
+  const s = DB.stats; s.kwHits = (s.kwHits||0)+1; DB.stats = s;
+}
+
+function closeKwDropdown(prefix) {
+  const dd = document.getElementById(prefix + '-kw-dropdown');
+  if (dd) { dd.classList.remove('open'); dd.innerHTML = ''; }
+}
+
+// ════════════════════ QUICK REPLY PILLS ════════════════════
+function renderQuickReplies() {
+  ['eg','tb'].forEach(prefix => {
+    const kws = DB.keywords.slice(0,20);
+    const grid = document.getElementById(prefix + '-qr-grid');
+    const sec  = document.getElementById(prefix + '-qr-section');
+    if (!kws.length) { sec.style.display = 'none'; return; }
+    sec.style.display = 'block';
+    grid.innerHTML = kws.map(k => `
+      <span class="qr-pill" onclick="applyKeyword('${prefix}','${escAttr(k.keyword)}')">${escHtml(k.keyword)}</span>
+    `).join('');
+  });
+}
+
+// ════════════════════ SEND — EMAIL GATEWAY ════════════════════
+function sendEmail() {
+  const phone   = document.getElementById('eg-phone').value.trim();
+  const carrier = document.getElementById('eg-carrier').value;
+  const kwVal   = document.getElementById('eg-keyword-trigger').value.trim();
+  const msg     = document.getElementById('eg-msg').value.trim() || kwVal;
+  const usedKw  = DB.keywords.find(k => k.keyword === kwVal.toUpperCase());
+
+  if (!phone || phone.length !== 10) return showBanner('eg-banner','error','⚠️ Enter a valid 10-digit US phone number.');
+  if (!carrier) return showBanner('eg-banner','error','⚠️ Please select the recipient\'s carrier.');
+  if (!msg) return showBanner('eg-banner','error','⚠️ Message is empty.');
+
+  const to = phone + '@' + carrier;
+  window.location.href = 'mailto:' + to + '?subject=&body=' + encodeURIComponent(msg);
+  DB.bumpSent(phone, msg, 'email', usedKw?.keyword);
+  showBanner('eg-banner','success','✅ Email app opening… just hit <strong>Send</strong> to deliver the text to <strong>' + phone + '</strong>.');
+}
+
+// ════════════════════ SEND — TEXTBELT ════════════════════
+function sendTextbelt() {
+  const phone  = document.getElementById('tb-phone').value.trim();
+  const kwVal  = document.getElementById('tb-keyword-trigger').value.trim();
+  const msg    = document.getElementById('tb-msg').value.trim() || kwVal;
+  const usedKw = DB.keywords.find(k => k.keyword === kwVal.toUpperCase());
+  const btn    = document.getElementById('tb-btn');
+
+  if (!phone || phone.length !== 10) return showBanner('tb-banner','error','⚠️ Enter a valid 10-digit US phone number.');
+  if (!msg) return showBanner('tb-banner','error','⚠️ Message is empty.');
+
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+  showBanner('tb-banner','info','⏳ Sending…');
+
+  fetch('https://textbelt.com/text', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ phone: '1'+phone, message: msg, key: 'textbelt' })
+  })
+  .then(r => r.json())
+  .then(data => {
+    btn.disabled = false;
+    btn.textContent = '⚡ Send via TextBelt (Free)';
+    if (data.success) {
+      DB.bumpSent(phone, msg, 'textbelt', usedKw?.keyword);
+      showBanner('tb-banner','success','✅ Sent to <strong>'+phone+'</strong>!<br><small>Quota: '+(data.quotaRemaining??'?')+' remaining today</small>');
+    } else {
+      showBanner('tb-banner','error','❌ '+(data.error||'Failed')+'. Try Email Gateway for unlimited sends.');
+    }
+  })
+  .catch(() => {
+    btn.disabled = false;
+    btn.textContent = '⚡ Send via TextBelt (Free)';
+    showBanner('tb-banner','error','❌ Network error. Try the Email Gateway tab instead.');
+  });
+}
+
+// ════════════════════ KEYWORDS MANAGEMENT ════════════════════
+let editingKeyword = null;
+
+function renderKeywordList() {
+  const search = (document.getElementById('kw-search')?.value||'').toLowerCase();
+  const kws = DB.keywords.filter(k =>
+    !search || k.keyword.toLowerCase().includes(search) || k.reply.toLowerCase().includes(search)
+  );
+
+  const label = document.getElementById('kw-count-label');
+  const total = DB.keywords.length;
+  label.textContent = total + ' keyword' + (total!==1?'s':'') + ' saved';
+
+  const list = document.getElementById('kw-list');
+  if (!kws.length) {
+    list.innerHTML = total
+      ? '<div class="empty-state"><span class="icon">🔍</span>No keywords match your search.</div>'
+      : '<div class="empty-state"><span class="icon">⚡</span>No keywords yet.<br>Add one to build your auto-reply library.</div>';
+    return;
   }
 
-  function updateCount(msgId, countId, max) {
-    const len = document.getElementById(msgId).value.length;
-    const el = document.getElementById(countId);
-    el.textContent = len + ' / ' + max;
-    el.className = 'char-count' + (len > max * 0.9 ? (len >= max ? ' over' : ' warn') : '');
+  list.innerHTML = kws.map((k,i) => `
+    <div class="kw-row" id="kw-row-${escAttr(k.keyword)}">
+      <div class="kw-row-body">
+        <div class="kw-row-keyword">⚡ ${escHtml(k.keyword)}</div>
+        <div class="kw-row-reply">${escHtml(k.reply)}</div>
+      </div>
+      <div class="kw-row-actions">
+        <button class="btn-sm btn-edit" onclick="openEditModal('${escAttr(k.keyword)}')">✏️</button>
+        <button class="btn-sm btn-danger" onclick="deleteKeyword('${escAttr(k.keyword)}')">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openAddModal() {
+  editingKeyword = null;
+  document.getElementById('modal-title').textContent = 'Add Keyword';
+  document.getElementById('modal-keyword').value = '';
+  document.getElementById('modal-keyword').disabled = false;
+  document.getElementById('modal-reply').value = '';
+  document.getElementById('modal-count').textContent = '0 / 160';
+  clearBanner('modal-banner');
+  document.getElementById('modal-save-btn').textContent = 'Save Keyword';
+  document.getElementById('kw-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('modal-keyword').focus(), 80);
+}
+
+function openEditModal(keyword) {
+  const kw = DB.keywords.find(k => k.keyword === keyword);
+  if (!kw) return;
+  editingKeyword = keyword;
+  document.getElementById('modal-title').textContent = 'Edit Keyword';
+  document.getElementById('modal-keyword').value = kw.keyword;
+  document.getElementById('modal-keyword').disabled = true;
+  document.getElementById('modal-reply').value = kw.reply;
+  updateCount('modal-reply','modal-count',160);
+  clearBanner('modal-banner');
+  document.getElementById('modal-save-btn').textContent = 'Update';
+  document.getElementById('kw-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('modal-reply').focus(), 80);
+}
+
+function closeModal() {
+  document.getElementById('kw-modal').classList.remove('open');
+}
+
+function saveKeyword() {
+  const keyword = document.getElementById('modal-keyword').value.trim().toUpperCase().replace(/\s+/g,'_');
+  const reply   = document.getElementById('modal-reply').value.trim();
+
+  if (!keyword) return showBanner('modal-banner','error','⚠️ Keyword cannot be empty.');
+  if (!reply)   return showBanner('modal-banner','error','⚠️ Reply message cannot be empty.');
+
+  const kws = DB.keywords;
+
+  if (editingKeyword) {
+    const idx = kws.findIndex(k => k.keyword === editingKeyword);
+    if (idx > -1) kws[idx].reply = reply;
+  } else {
+    if (kws.find(k => k.keyword === keyword)) return showBanner('modal-banner','error','⚠️ Keyword "'+keyword+'" already exists. Edit it instead.');
+    kws.push({ keyword, reply, created: Date.now() });
   }
 
-  function showBanner(id, type, msg) {
-    const el = document.getElementById(id);
-    el.className = 'banner ' + type;
-    el.innerHTML = msg;
-    el.style.display = 'block';
+  DB.keywords = kws;
+  closeModal();
+  renderKeywordList();
+  renderQuickReplies();
+}
+
+function deleteKeyword(keyword) {
+  if (!confirm('Delete keyword "' + keyword + '"?')) return;
+  DB.keywords = DB.keywords.filter(k => k.keyword !== keyword);
+  renderKeywordList();
+  renderQuickReplies();
+}
+
+// ════════════════════ STATS ════════════════════
+function renderStats() {
+  const s = DB.stats;
+  document.getElementById('stat-sent').textContent = s.sent || 0;
+  document.getElementById('stat-keywords').textContent = DB.keywords.length;
+  document.getElementById('stat-kw-used').textContent = s.kwHits || 0;
+
+  const log = DB.log;
+  const actList = document.getElementById('activity-list');
+  if (!log.length) {
+    actList.innerHTML = '<div class="empty-state"><span class="icon">📋</span>No messages sent yet.</div>';
+    return;
   }
 
-  function sendEmail() {
-    const phone   = document.getElementById('eg-phone').value.trim();
-    const carrier = document.getElementById('eg-carrier').value;
-    const msg     = document.getElementById('eg-msg').value.trim();
+  actList.innerHTML = log.slice(0,15).map(entry => {
+    const d = new Date(entry.ts);
+    const time = d.toLocaleDateString(undefined, {month:'short',day:'numeric'}) + ' ' +
+                 d.toLocaleTimeString(undefined, {hour:'2-digit',minute:'2-digit'});
+    return `
+      <div style="padding:10px 0; border-bottom:1px solid #2a2a2a; display:flex; gap:10px; align-items:flex-start;">
+        <span style="font-size:1.1rem">${entry.method==='email'?'📧':'⚡'}</span>
+        <div style="flex:1; min-width:0;">
+          <div style="font-size:0.82rem; color:#ccc; font-weight:600;">${escHtml(entry.phone)} ${entry.kw ? '<span style="color:#ff7733; font-size:0.75rem;">⚡ '+escHtml(entry.kw)+'</span>' : ''}</div>
+          <div style="font-size:0.79rem; color:#777; margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escHtml(entry.msg)}${entry.msg.length===60?'…':''}</div>
+        </div>
+        <span style="font-size:0.72rem; color:#555; white-space:nowrap;">${time}</span>
+      </div>`;
+  }).join('');
+}
 
-    if (!phone || phone.length !== 10) {
-      showBanner('eg-banner', 'error', '⚠️ Enter a valid 10-digit US phone number.');
-      return;
-    }
-    if (!carrier) {
-      showBanner('eg-banner', 'error', '⚠️ Please select the recipient\'s carrier.');
-      return;
-    }
-    if (!msg) {
-      showBanner('eg-banner', 'error', '⚠️ Message cannot be empty.');
-      return;
-    }
+// ════════════════════ EXPORT / CLEAR ════════════════════
+function exportData() {
+  const data = { keywords: DB.keywords, stats: DB.stats, log: DB.log, exported: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'shoutcode-data.json';
+  a.click();
+}
 
-    const to = phone + '@' + carrier;
-    const mailtoLink = 'mailto:' + to + '?subject=&body=' + encodeURIComponent(msg);
-    window.location.href = mailtoLink;
+function confirmClear() {
+  if (!confirm('Clear ALL ShoutCode data (keywords, stats, history)? This cannot be undone.')) return;
+  localStorage.removeItem('sc_keywords');
+  localStorage.removeItem('sc_stats');
+  localStorage.removeItem('sc_log');
+  renderStats();
+}
 
-    showBanner('eg-banner', 'success',
-      '✅ Your email app should open now.<br>Just hit <strong>Send</strong> there — it arrives as a text to ' +
-      '<strong>' + phone + '</strong>.');
-  }
+// ════════════════════ HELPERS ════════════════════
+function showBanner(id, type, msg) {
+  const el = document.getElementById(id);
+  el.className = 'banner ' + type;
+  el.innerHTML = msg;
+}
 
-  function sendTextbelt() {
-    const phone = document.getElementById('tb-phone').value.trim();
-    const msg   = document.getElementById('tb-msg').value.trim();
-    const btn   = document.getElementById('tb-btn');
+function clearBanner(id) {
+  const el = document.getElementById(id);
+  el.className = 'banner';
+  el.innerHTML = '';
+}
 
-    if (!phone || phone.length !== 10) {
-      showBanner('tb-banner', 'error', '⚠️ Enter a valid 10-digit US phone number.');
-      return;
-    }
-    if (!msg) {
-      showBanner('tb-banner', 'error', '⚠️ Message cannot be empty.');
-      return;
-    }
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 
-    btn.disabled = true;
-    btn.textContent = 'Sending…';
-    showBanner('tb-banner', 'info', '⏳ Sending…');
+function escAttr(s) {
+  return String(s).replace(/'/g,"\\'").replace(/"/g,'&quot;');
+}
 
-    fetch('https://textbelt.com/text', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ phone: '1' + phone, message: msg, key: 'textbelt' })
-    })
-    .then(r => r.json())
-    .then(data => {
-      btn.disabled = false;
-      btn.textContent = '⚡ Send via TextBelt (Free)';
-      if (data.success) {
-        showBanner('tb-banner', 'success',
-          '✅ Message sent to <strong>' + phone + '</strong>!<br><small>TextBelt quota: ' +
-          (data.quotaRemaining !== undefined ? data.quotaRemaining + ' sends remaining today' : 'check textbelt.com') + '</small>');
-      } else {
-        showBanner('tb-banner', 'error',
-          '❌ ' + (data.error || 'Send failed.') + '<br><small>TextBelt allows 1 free send per day. Try the Email Gateway tab for unlimited sends.</small>');
-      }
-    })
-    .catch(() => {
-      btn.disabled = false;
-      btn.textContent = '⚡ Send via TextBelt (Free)';
-      showBanner('tb-banner', 'error',
-        '❌ Network error. Check your connection, or use the Email Gateway tab instead.');
-    });
-  }
+// ════════════════════ INIT ════════════════════
+renderQuickReplies();
 </script>
 </body>
 </html>
